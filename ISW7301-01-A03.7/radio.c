@@ -275,3 +275,22 @@ void start_rssi_timer()
     INTCONbits.PEIE = 1;
     INTCONbits.GIE = 1;
 }
+
+void cc1120_sleep()
+{
+    trxCmdStrobe(CC1120_SPWD);
+}
+
+void cc1120_idle()
+{
+    trxCmdStrobe(CC1120_SIDLE);
+}
+
+uint8_t cc1120_state(void)
+{
+  uint8_t state;
+
+  cc1120SpiReadReg(CC1120_MARCSTATE, &state, 1);
+  
+  return state & 0x1f;
+}

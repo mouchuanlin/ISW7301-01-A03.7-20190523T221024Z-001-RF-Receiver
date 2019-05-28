@@ -58,6 +58,10 @@ volatile unsigned char TempScale;
 volatile bit io_change;
 unsigned short packetCounter = 0;
 
+
+//    uint8_t rxBuffer[10] = {0};
+//    uint8_t rxBytes, marcStatus;
+
 void __interrupt isr()
 {
     if (PIR1bits.RCIF)
@@ -93,6 +97,9 @@ void __interrupt isr()
     {
         INTCONbits.IOCIF = 0;
         IOCBFbits.IOCBF7 = 0;   // BF7 HERE**
+
+        // mlin
+        //receivedData(rxBuffer, &rxBytes, &marcStatus);
         receivedSync = true;
     }
     
@@ -145,9 +152,15 @@ void main(void)
     uint8_t rxBuffer[10] = {0};
     uint8_t rxBytes, marcStatus;
     
+
+    //trxCmdStrobe(CC1120_SPWD)
+    
     /* Inf Loop */
     while(1)
     {
+//        uint8_t marcstate = 0;
+//        rfStatus_t status = cc1120SpiReadReg(CC1120_MARCSTATE, &marcstate, 1);
+        
         CLRWDT();
         
         // Increment Timer
@@ -162,6 +175,7 @@ void main(void)
         }
         
         if (receivedData(rxBuffer, &rxBytes, &marcStatus))
+        //if (receivedSync)
         {
             if(crcOK(rxBuffer, 6) && (rxBuffer[0] != 0x00))
             {
@@ -248,6 +262,14 @@ void main(void)
         
         TRXEM_SPI_END();
         WPUB4 = 1;
+        
+        
+        //cc1120_sleep();
+        
+        //uint8_t marcstate = cc1120_state();
+//        cc1120_idle();
+        
+
         
         SLEEP();
         NOP();
