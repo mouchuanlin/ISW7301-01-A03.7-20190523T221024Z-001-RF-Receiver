@@ -128,7 +128,10 @@ void main(void)
     R_LED = 1;
     G_LED = 1;
     WDTCONbits.SWDTEN = 0;
-    __delay_ms(1000);
+    // __delay_ms(1000);
+    
+    for (int i = 0; i < 20000; i++)
+        ;
     R_LED = 0;
     G_LED = 0;
     WDTCONbits.SWDTEN = 1;
@@ -152,15 +155,9 @@ void main(void)
     uint8_t rxBuffer[10] = {0};
     uint8_t rxBytes, marcStatus;
     
-
-    //trxCmdStrobe(CC1120_SPWD)
-    
     /* Inf Loop */
-    while(1)
+//    while(1)
     {
-//        uint8_t marcstate = 0;
-//        rfStatus_t status = cc1120SpiReadReg(CC1120_MARCSTATE, &marcstate, 1);
-        
         CLRWDT();
         
         // Increment Timer
@@ -174,9 +171,16 @@ void main(void)
                 msgTmrState[i] = TIMER_DONE;
         }
         
-        if (receivedData(rxBuffer, &rxBytes, &marcStatus))
-        //if (receivedSync)
+        TRXEM_SPI_END();
+        trxCmdStrobe(CC1120_SWOR);
+        
+//        while (!receivedSync)
+//            ;
+        
+        if (receivedSync)
         {
+            receivedData(rxBuffer, &rxBytes, &marcStatus);
+            
             if(crcOK(rxBuffer, 6) && (rxBuffer[0] != 0x00))
             {
                 if (isUniqueTransmission(rxBuffer))
@@ -262,15 +266,7 @@ void main(void)
         
         TRXEM_SPI_END();
         WPUB4 = 1;
-        
-        
-        //cc1120_sleep();
-        
-        //uint8_t marcstate = cc1120_state();
-//        cc1120_idle();
-        
 
-        
         SLEEP();
         NOP();
     }

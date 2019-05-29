@@ -235,6 +235,32 @@
 #define CC1120_STATE_TXFIFO_ERROR       0x70
 #define CC1120_RX_FIFO_ERROR            0x11
 
+// cc1120 state
+#define CC11xx_STATE_SLEEP             0
+#define CC11xx_STATE_IDLE              1
+#define CC11xx_STATE_XOFF              2
+#define CC11xx_STATE_VCOON_MC          3
+#define CC11xx_STATE_REGON_MC          4
+#define CC11xx_STATE_MANCAL            5
+#define CC11xx_STATE_VCOON             6
+#define CC11xx_STATE_REGON             7
+#define CC11xx_STATE_STARTCAL          8
+#define CC11xx_STATE_BWBOOST           9
+#define CC11xx_STATE_FS_LOCK          10
+#define CC11xx_STATE_IFADCON          11
+#define CC11xx_STATE_ENDCAL           12
+#define CC11xx_STATE_RX               13
+#define CC11xx_STATE_RX_END           14
+#define CC11xx_STATE_RX_RST           15
+#define CC11xx_STATE_TXRX_SWITCH      16
+#define CC11xx_STATE_RXFIFO_OVERFLOW  17
+#define CC11xx_STATE_FSTXON           18
+#define CC11xx_STATE_TX               19
+#define CC11xx_STATE_TX_END           20
+#define CC11xx_STATE_RXTX_SWITCH      21
+#define CC11xx_STATE_TXFIFO_UNDERFLOW 22
+
+
 
 /************************************************************
  * TYPEDEFS
